@@ -1,9 +1,9 @@
 import Head from 'next/head'
 import styles from '@/styles/Home.module.css'
-import Login from 'C:/Users/ASUS VIVOBOOK X413J/data-dashboard/src/components/login'
 import Dashboard from './dashboard'
 import Header from 'C:/Users/ASUS VIVOBOOK X413J/data-dashboard/src/components/Header'
 import SideMenu from 'C:/Users/ASUS VIVOBOOK X413J/data-dashboard/src/components/SideMenu'
+import Login from '@/components/login'
 
 
 
@@ -21,7 +21,8 @@ export default function Home() {
             <Header/>
             <SideMenu/>
             <Dashboard/>
-            <Login />
+            <Login/>
+            
           
       </main>
     </>
