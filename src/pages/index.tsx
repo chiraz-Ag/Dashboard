@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Dashboard from "@/pages/dashboard";
 import SideMenu from "@/components/SideMenu";
-import Login from "@/components/login";
+import Login from "@/components/auth";
 import { useSession } from "next-auth/react";
 import scss from "./Home.module.scss";
 import React from "react";
