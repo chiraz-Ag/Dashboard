@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import LinearProgress from "@mui/material/LinearProgress";
 import Papa from "papaparse";
+import { Paper, Typography } from "@mui/material";
 
 const CSV_FILE_PATH = "/data/freelancer_earnings_bd.csv"; // Assure-toi que le fichier est dans `public/`
 
@@ -67,29 +68,25 @@ const Data = () => {
   ];
 
   return (
-    <div style={{ height: 800, width: "100%" }}>
-      <h1>Freelancer Earnings Dashboard</h1>
+    <div style={{ width: "100%" }}>
+      {/* 📌 Tableau des données */}
+      <Paper elevation={3} sx={{ padding: 2 }}>
+        <Typography variant="h5" gutterBottom>
+          Freelancer Data Table
+        </Typography>
 
-      <p
-        style={{
-          textAlign: "center",
-          fontWeight: "bold",
-          marginBottom: "20px",
-        }}
-      >
-        Freelancers' Earnings Data
-      </p>
+        <DataGrid
+          getRowId={(row) => row.Freelancer_ID} // Utilisation de Freelancer_ID comme ID unique
+          rows={displayData}
+          columns={columns}
+          loading={loading}
+          slots={{ loadingOverlay: LinearProgress }}
+          pageSizeOptions={[10, 25, 50, 100]}
+          pagination
+        />
+      </Paper>
 
-      <DataGrid
-        getRowId={(row) => row.Freelancer_ID} // Utilisation de Freelancer_ID comme ID unique
-        rows={displayData}
-        columns={columns}
-        loading={loading}
-        slots={{ loadingOverlay: LinearProgress }}
-        pageSizeOptions={[10, 25, 50, 100]}
-        pagination
-      />
-
+      {/* 📌 Bouton pour charger plus de données */}
       {displayData.length < data.length && (
         <button
           onClick={loadMoreData}
