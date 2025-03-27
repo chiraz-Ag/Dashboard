@@ -4,14 +4,13 @@ const lightTheme: ThemeOptions = {
   palette: {
     mode: "light",
     primary: {
-      main: "#1976d2", // Bleu moderne
+      main: "#ffff00",
     },
     secondary: {
-      main: "#ff4081", // Rose dynamique
+      main: "#ff8400",
     },
     background: {
-      default: "#f5f5f5", // Gris clair doux
-      paper: "#ffffff", // Blanc pour les cartes
+      default: "#9e9e9e",
     },
   },
 };
