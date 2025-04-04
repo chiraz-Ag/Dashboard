@@ -13,16 +13,15 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import { signIn, signOut, useSession } from "next-auth/react";
-import ThemeToggleButton from "@/components/ThemeToggleButton";
 import { useMediaQuery } from "@mui/material";
+import { useTheme } from "@/contexts/ThemeContext";
+import { useRouter } from "next/router";
+import ThemeSelector from "@/components/ThemeSelector";
 
-export type HeaderProps = {
-  ColorModeContext: React.Context<{ toggleColorMode: () => void }>;
-};
-
-const Header = (props: HeaderProps) => {
-  const { ColorModeContext } = props;
+const Header = () => {
   const { data: session } = useSession();
+  const { isDark } = useTheme();
+  const router = useRouter();
   const userProfileImg = session?.user?.image as string;
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
@@ -46,36 +45,61 @@ const Header = (props: HeaderProps) => {
     setAnchorElUser(null);
   };
 
+  const navigateHome = (e: React.MouseEvent) => {
+    e.preventDefault();
+    router.push('/');
+  };
+
   const tabletCheck = useMediaQuery("(min-width: 768px)");
 
   return (
-    <AppBar position="static" sx={{ marginBottom: "40px" }}>
+    <AppBar 
+      position="static" 
+      sx={{ 
+        marginBottom: "40px",
+        transition: "background-color 0.3s ease",
+      }}
+    >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+          <AdbIcon 
+            sx={{ 
+              display: { xs: "none", md: "flex" }, 
+              mr: 1,
+              color: isDark ? '#fff' : 'inherit',
+            }} 
+          />
           <Typography
             variant="h6"
             noWrap
             component="a"
             href="/"
+            onClick={navigateHome}
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
-              color: "inherit",
+              color: isDark ? '#fff' : 'inherit',
               textDecoration: "none",
             }}
           >
             DataSoft
           </Typography>
-          <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
+          <AdbIcon 
+            sx={{ 
+              display: { xs: "flex", md: "none" }, 
+              mr: 1,
+              color: isDark ? '#fff' : 'inherit',
+            }} 
+          />
           <Typography
             variant="h5"
             noWrap
             component="a"
-            href=""
+            href="/"
+            onClick={navigateHome}
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },
@@ -83,19 +107,20 @@ const Header = (props: HeaderProps) => {
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
-              color: "inherit",
+              color: isDark ? '#fff' : 'inherit',
               textDecoration: "none",
             }}
           >
             DataSoft
           </Typography>
-          {tabletCheck && (
+          {tabletCheck && session && (
             <Box sx={{ paddingRight: 5, marginLeft: "auto" }}>
-              <Typography>Signed in as {session?.user?.email}</Typography>
+              <Typography sx={{ color: isDark ? '#fff' : 'inherit' }}>
+                Signed in as {session?.user?.email}
+              </Typography>
             </Box>
           )}
-          <ThemeToggleButton ColorModeContext={ColorModeContext} />
-          <Box sx={{ flexGrow: 0 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', ml: 'auto' }}>
             <Tooltip title="Open profile settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar
@@ -104,6 +129,7 @@ const Header = (props: HeaderProps) => {
                 />
               </IconButton>
             </Tooltip>
+            <ThemeSelector />
             <Menu
               sx={{ mt: "45px" }}
               id="menu-appbar"
