@@ -1,52 +1,39 @@
-import { SessionProvider } from "next-auth/react";
+// src/pages/_app.tsx
+import "@/i18n";
 import React from "react";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { AppProps } from "next/app";
+import { SessionProvider } from "next-auth/react";
 import { CssBaseline } from "@mui/material";
-import darkTheme from "@/theme/darkTheme";
-import lightTheme from "@/theme/lightTheme";
 import Header from "@/components/Header";
+import ThemeSelector from "@/components/ThemeSelector";
+import SideMenu from "@/components/SideMenu";
+import { ThemeProvider } from "@/contexts/ThemeContext";
+import { LanguageProvider } from "@/contexts/LanguageContext";
+import { useRouter } from "next/router";
 
-const ColorModeContext = React.createContext({
-  toggleColorMode: () => {},
-});
+const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
+  const router = useRouter();
 
-const App = ({ Component, pageProps: { session, ...pageProps } }) => {
-  const [mode, setMode] = React.useState<"light" | "dark">("dark");
-  const colorMode = React.useMemo(
-    () => ({
-      toggleColorMode: () => {
-        setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
-      },
-    }),
-    []
-  );
+  const isDataPage = router.pathname === "/dashboard/data";
 
-  const darkThemeChosen = React.useMemo(
-    () =>
-      createTheme({
-        ...darkTheme,
-      }),
-    [mode]
-  );
-  const lightThemeChosen = React.useMemo(
-    () =>
-      createTheme({
-        ...lightTheme,
-      }),
-    [mode]
-  );
   return (
-    <ColorModeContext.Provider value={colorMode}>
-      <ThemeProvider
-        theme={mode === "dark" ? darkThemeChosen : lightThemeChosen}
-      >
-        <SessionProvider session={session}>
+    <ThemeProvider>
+      <SessionProvider session={session}>
+        <LanguageProvider>
           <CssBaseline />
-          <Header ColorModeContext={ColorModeContext} />
-          <Component {...pageProps} />
-        </SessionProvider>
-      </ThemeProvider>
-    </ColorModeContext.Provider>
+          <Header />
+          {!isDataPage && <SideMenu />}
+
+          {/* Contenu principal */}
+          <div style={{ padding: 0 }}>
+            <Component {...pageProps} />
+          </div>
+
+          <ThemeSelector />
+        </LanguageProvider>
+      </SessionProvider>
+    </ThemeProvider>
   );
 };
+
 export default App;

@@ -68,26 +68,26 @@ const Data = () => {
   ];
 
   return (
-    <div style={{ width: "100%" }}>
-      {/* 📌 Tableau des données */}
+    <div style={{ width: "100%", paddingTop: "80px" }}>
       <Paper elevation={3} sx={{ padding: 2 }}>
         <Typography variant="h5" gutterBottom>
           Freelancer Data Table
         </Typography>
 
-        <DataGrid
-          getRowId={(row) => row.Freelancer_ID} // Utilisation de Freelancer_ID comme ID unique
-          rows={displayData}
-          columns={columns}
-          loading={loading}
-          slots={{ loadingOverlay: LinearProgress }}
-          pageSizeOptions={[10, 25, 50, 100]}
-          pagination
-        />
+        {loading ? (
+          <LinearProgress />
+        ) : (
+          <DataGrid
+            getRowId={(row) => row.Freelancer_ID}
+            rows={displayData}
+            columns={columns}
+            pageSizeOptions={[10, 25, 50, 100]}
+            pagination
+          />
+        )}
       </Paper>
 
-      {/* 📌 Bouton pour charger plus de données */}
-      {displayData.length < data.length && (
+      {!loading && displayData.length < data.length && (
         <button
           onClick={loadMoreData}
           style={{
@@ -97,7 +97,7 @@ const Data = () => {
             cursor: "pointer",
           }}
         >
-          Charger plus de données
+          Load more data
         </button>
       )}
     </div>

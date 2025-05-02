@@ -1,0 +1,13 @@
+{
+  "settings": {
+    "title": "Settings",
+    "appearance": "Appearance",
+    "darkMode": "Dark Mode",
+    "lightMode": "Light Mode",
+    "language": "Language",
+    "selectLanguage": "Select a language",
+    "currency": "Currency",
+    "selectCurrency": "Select a currency",
+    "conversionRate": "Conversion Rate"
+  }
+}
